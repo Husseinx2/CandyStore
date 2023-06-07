@@ -8,13 +8,14 @@ namespace Capstone.Classes
     {
         private Store store = new Store();
 
-
         /// <summary>
         /// Provides all communication with human user.
         /// 
-        /// All Console.Readline() and Console.WriteLine() statements belong in this class.
+        /// All Console.Readline() and Console.WriteLine() statements belong 
+        /// in this class.
         /// 
-        /// NO Console.Readline() and Console.WriteLine() statements should be in any other class
+        /// NO Console.Readline() and Console.WriteLine() statements should be 
+        /// in any other class
         /// 
         /// </summary>
         public void Run()
