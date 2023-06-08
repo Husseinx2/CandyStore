@@ -1,5 +1,6 @@
 using Capstone.Classes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CapstoneTests
 {
@@ -16,6 +17,21 @@ namespace CapstoneTests
 
             //Assert
             Assert.IsNotNull(testObject);
+        }
+
+        [TestMethod]
+        public void ShowInventoryTest()
+        {
+            // Arrange
+            Store test = new Store();
+
+            // Act
+            List<Candy> result = test.ShowInventory();
+            List<Candy> candies = new List<Candy>();
+
+            // Assert
+            //CollectionAssert.AllItemsAreInstancesOfType(result, new List<Candy>());
+            CollectionAssert.AreEqual(candies, result);
         }
     }
 }

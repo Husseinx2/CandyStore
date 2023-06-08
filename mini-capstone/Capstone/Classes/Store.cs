@@ -10,5 +10,10 @@ namespace Capstone.Classes
     /// </summary>
     public class Store
     {
+        private List<Candy> candies = new List<Candy>();
+        public List<Candy> ShowInventory()
+        {
+            return candies;
+        }
     }
 }
