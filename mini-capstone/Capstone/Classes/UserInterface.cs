@@ -66,6 +66,7 @@ namespace Capstone.Classes
                         SelectProducts();
                         break;
                     case "3":
+
                         done = true;
                         break;
                     default:
@@ -83,6 +84,10 @@ namespace Capstone.Classes
             Console.Write("Enter Quantity: ");
             int quantity = int.Parse(Console.ReadLine());
             bool isValid = store.SelectProducts(productId, quantity);
+            if (!isValid)
+            {
+                Console.WriteLine(store.SelectProductFailMessage(productId, quantity));
+            }
         }
 
         private void AddMoney()
@@ -108,8 +113,12 @@ namespace Capstone.Classes
                 {
                     wrapper = "N";
                 }
-
-                Console.WriteLine($"{candy.Id} {candy.Name} {wrapper} {candy.Qty} {candy.Price:C2}");
+                string quantity = $"{candy.Qty}";
+                if (candy.Qty == 0)
+                {
+                    quantity = "SOLD OUT";
+                }    
+                Console.WriteLine($"{candy.Id} {candy.Name} {wrapper} {quantity} {candy.Price:C2}");
             }
         }
 

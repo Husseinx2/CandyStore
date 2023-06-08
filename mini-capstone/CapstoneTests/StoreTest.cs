@@ -75,5 +75,22 @@ namespace CapstoneTests
             // Assert
             Assert.AreEqual(expectedResult, actualResult);
         }
+        [DataTestMethod]
+        [DataRow("C2", 101, "Insufficent stock", 100)]
+        [DataRow("C2", 9, "Insufficent funds", 0)]
+        [DataRow("C100", 1, "ID not Found", 50)]
+        public void SelectProductFailMessageTest(string selection, int quantity, string expectedResult, int money)
+        {
+            // Arrange
+            Store testStore = new Store();
+            testStore.GetInventory();
+            testStore.AddMoney(money);
+            
+            // Act
+            string actualResult = testStore.SelectProductFailMessage(selection, quantity);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
     }
 }
