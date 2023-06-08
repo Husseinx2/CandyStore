@@ -77,21 +77,24 @@ namespace Capstone.Classes
 
         private void SelectProducts()
         {
-
             ShowInventory();
-           string result = Console.ReadLine();
+            Console.Write("Enter Product Id: ");
+            string productId = Console.ReadLine();
+            Console.Write("Enter Quantity: ");
+            int quantity = int.Parse(Console.ReadLine());
+            bool isValid = store.SelectProducts(productId, quantity);
         }
 
         private void AddMoney()
         {
             Console.WriteLine("Enter Amount to Add");
-            int money =  int.Parse(Console.ReadLine());
-          bool result = store.AddMoney(money);
+            int money = int.Parse(Console.ReadLine());
+            bool result = store.AddMoney(money);
             if (!result)
             {
                 Console.WriteLine("Enter Amount between 1 and 100");
             }
-           
+
         }
 
         private void ShowInventory()
@@ -101,7 +104,7 @@ namespace Capstone.Classes
             foreach (Candy candy in candies)
             {
                 string wrapper = "Y";
-                if (!candy.Wrapper) 
+                if (!candy.Wrapper)
                 {
                     wrapper = "N";
                 }

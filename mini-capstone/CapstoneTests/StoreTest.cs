@@ -56,5 +56,24 @@ namespace CapstoneTests
             Assert.AreEqual(0, resultThree);
 
         }
+
+        [DataTestMethod]
+        [DataRow("C1", 9, true, 50)]
+        [DataRow("C9", 9, false, 50)]
+        [DataRow("C1", 109, false, 50)]
+        [DataRow("C1", 9, false, 0)]
+        public void SelectProductTests(string selection, int quantity, bool expectedResult, int money)
+        {
+            // Arrange
+            Store testStore = new Store();
+            testStore.GetInventory();
+            testStore.AddMoney(money);
+
+            // Act
+            bool actualResult = testStore.SelectProducts(selection, quantity);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
     }
 }

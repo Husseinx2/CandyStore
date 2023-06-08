@@ -7,13 +7,14 @@ namespace Capstone.Classes
 {
     public class FileHandler
     {
-        private string path = "C://Store//inventory.csv";
+        private string inventoryPath = "C://Store//inventory.csv";
+        private string logPath = "C://Store//log.txt";
         public List<Candy> ReadInventory()
         {
             List<Candy> candies = new List<Candy>();
             try
             {           
-                using(StreamReader sr = new StreamReader(path))
+                using(StreamReader sr = new StreamReader(inventoryPath))
                 {
                     while(!sr.EndOfStream)
                     {
@@ -34,6 +35,22 @@ namespace Capstone.Classes
              return new List<Candy>();
             }
             return candies;
+        }
+
+        public void Log(string message)
+        {
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(logPath, true))
+                {
+                    sw.WriteLine($"{DateTime.Now} {message}");
+                }
+            }
+            catch (IOException)
+            {
+                
+            }
         }
     }
 }
