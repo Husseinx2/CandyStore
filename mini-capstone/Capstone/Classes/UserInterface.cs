@@ -21,6 +21,7 @@ namespace Capstone.Classes
         /// </summary>
         public void Run()
         {
+            store.GetInventory();
             bool done = false;
 
             while (!done)
@@ -59,8 +60,10 @@ namespace Capstone.Classes
                 switch (userInput)
                 {
                     case "1":
+                        AddMoney();
                         break;
                     case "2":
+                        SelectProducts();
                         break;
                     case "3":
                         done = true;
@@ -72,13 +75,38 @@ namespace Capstone.Classes
             }
         }
 
+        private void SelectProducts()
+        {
+
+            ShowInventory();
+           string result = Console.ReadLine();
+        }
+
+        private void AddMoney()
+        {
+            Console.WriteLine("Enter Amount to Add");
+            int money =  int.Parse(Console.ReadLine());
+          bool result = store.AddMoney(money);
+            if (!result)
+            {
+                Console.WriteLine("Enter Amount between 1 and 100");
+            }
+           
+        }
+
         private void ShowInventory()
         {
             Console.WriteLine($"Id Name Wrapper Qty Price");
             List<Candy> candies = store.ShowInventory();
             foreach (Candy candy in candies)
             {
-                Console.WriteLine($"{candy.Id} {candy.Name} {candy.Wrapper} {candy.Qty} {candy.Price:C2}");
+                string wrapper = "Y";
+                if (!candy.Wrapper) 
+                {
+                    wrapper = "N";
+                }
+
+                Console.WriteLine($"{candy.Id} {candy.Name} {wrapper} {candy.Qty} {candy.Price:C2}");
             }
         }
 
@@ -90,7 +118,7 @@ namespace Capstone.Classes
         public void DisplaySubMenu()
         {
             Console.WriteLine("(1) Take Money\n(2) Select Products\n(3) Complete Sale");
-            Console.WriteLine("Current Customer Balance: $0.00");
+            Console.WriteLine($"Current Customer Balance: {store.GetMoney():C2}");
         }
     }
 }
