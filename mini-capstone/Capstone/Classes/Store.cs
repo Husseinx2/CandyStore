@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Capstone.Classes
@@ -39,8 +40,8 @@ namespace Capstone.Classes
 
         // Inventory
         public List<Candy> ShowInventory()
-        {
-            return candies;
+        {            
+            return candies.OrderBy(candy => candy.Id).ToList();  // stackoverflow
         }
         public void GetInventory()
         {
@@ -109,7 +110,7 @@ namespace Capstone.Classes
             const decimal Nickel = 0.05M;
 
             string result = "";
-
+            filehandler.Log($"CHANGE GIVEN: {Money:C2} $0.00 ");
             while (Money > 0.00M)
             {
                 if (Money >= Twenty)
@@ -155,6 +156,9 @@ namespace Capstone.Classes
                     result += "(" + numberOf + ")" + "Nickel" + (numberOf == 1 ? "" : "s") + " ";
                 }
             }
+            //emptying shopping cart and reseting subtotal for next customer
+            shoppingCart = new List<Candy>();
+            SubTotal = 0;
             return result;
         }
 

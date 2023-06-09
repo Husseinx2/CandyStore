@@ -79,11 +79,11 @@ namespace Capstone.Classes
         }
         private void CompleteSale()
         {
-
+            decimal subtotal = store.SubTotal;
             decimal change = store.GetMoney();
-            string denominationsToGive = store.CompleteSale();
             List<Candy> candiesPurchased = store.GetShoppingCart();
-
+            string denominationsToGive = store.CompleteSale();
+            Console.WriteLine();
             foreach (Candy candy in candiesPurchased)
             {
                 string type = "";
@@ -102,23 +102,34 @@ namespace Capstone.Classes
                         type = "Hard Tact Confectionery";
                         break;
                 }
-                Console.WriteLine($"{candy.Qty} {candy.Name} {type} {candy.Price:C2} {candy.Price * candy.Qty:C2}");
+                Console.WriteLine($"{candy.Qty.ToString().PadRight(4)} {candy.Name.PadRight(16)}  {type.PadRight(23)}  {candy.Price:C2}  {candy.Price * candy.Qty:C2}");
             }
             Console.WriteLine();
-            Console.WriteLine($"Total: {store.SubTotal:C2}");
+            Console.WriteLine($"Total: {subtotal:C2}");
             Console.WriteLine();
             Console.WriteLine($"Change: {change:C2}");
             Console.WriteLine(denominationsToGive);
+            Console.WriteLine();
+    
         }
 
         private void SelectProducts()
         {
+            bool isValid = false;
             ShowInventory();
+            int quantity = 0;
             Console.Write("Enter Product Id: ");
             string productId = Console.ReadLine();
             Console.Write("Enter Quantity: ");
-            int quantity = int.Parse(Console.ReadLine()); // Can't parse empty string
-            bool isValid = store.SelectProducts(productId, quantity);
+            try
+            {
+                quantity = int.Parse(Console.ReadLine()); 
+                isValid = store.SelectProducts(productId, quantity);
+            }
+            catch (FormatException)
+            {
+
+            }
             if (!isValid)
             {
                 Console.WriteLine(store.SelectProductFailMessage(productId, quantity));
@@ -127,9 +138,18 @@ namespace Capstone.Classes
 
         private void AddMoney()
         {
+            bool result = false;
             Console.WriteLine("Enter Amount to Add");
-            int money = int.Parse(Console.ReadLine());
-            bool result = store.AddMoney(money);
+            try
+            {
+                int money = int.Parse(Console.ReadLine());
+                result = store.AddMoney(money);
+            }
+            catch (FormatException )
+            {
+               
+            }
+            
             if (!result)
             {
                 Console.WriteLine("Invalid entry, enter an Amount between 1 and 100");
@@ -139,8 +159,16 @@ namespace Capstone.Classes
 
         private void ShowInventory()
         {
-            Console.WriteLine($"Id Name Wrapper Qty Price");
             List<Candy> candies = store.ShowInventory();
+            int maxLength = 0;
+            foreach (Candy candy in candies)
+            {
+                if (maxLength < candy.Name.Length)
+                {
+                    maxLength = candy.Name.Length;
+                }
+            }
+            Console.WriteLine("Id".PadRight(5) + "Name".PadRight(maxLength + 2) +" Wrapper".PadRight(6) +" Qty".PadRight(11) +"Price");
             foreach (Candy candy in candies)
             {
                 string wrapper = "Y";
@@ -153,7 +181,7 @@ namespace Capstone.Classes
                 {
                     quantity = "SOLD OUT";
                 }    
-                Console.WriteLine($"{candy.Id} {candy.Name} {wrapper} {quantity} {candy.Price:C2}");
+                Console.WriteLine($"{candy.Id.PadRight(4)} {candy.Name.PadRight(maxLength + 2)} {wrapper.PadRight(7)} {quantity.PadRight(9)} {candy.Price:C2}");
             }
         }
 
