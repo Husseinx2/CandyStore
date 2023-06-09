@@ -63,7 +63,7 @@ namespace Capstone.Classes
                         selectedCandy.Qty = quantity;
                         candy.Qty -= quantity;
                         shoppingCart.Add(selectedCandy);
-                        SubTotal = (candy.Price * quantity);
+                        SubTotal += (candy.Price * quantity);
                         Money -= (candy.Price * quantity);
                         result = true;
                         filehandler.Log($"{quantity} {selectedCandy.Name} {selection} {candy.Price * quantity:C2} {Money:C2}");
@@ -157,7 +157,7 @@ namespace Capstone.Classes
                     result += "(" + numberOf + ")" + "Nickel" + (numberOf == 1 ? "" : "s") + " ";
                 }
             }
-            //emptying shopping cart and reseting subtotal for next customer
+            //emptying shopping cart and resetting subtotal for next customer
             AddPurchasedCandies();
             shoppingCart = new List<Candy>();
             SubTotal = 0;
