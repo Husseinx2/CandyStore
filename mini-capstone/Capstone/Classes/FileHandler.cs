@@ -66,14 +66,13 @@ namespace Capstone.Classes
                     while (!sr.EndOfStream)
                     {
                         string line = sr.ReadLine();
-                        string[] temp = line.Split("|");
-                        bool wrapper = false;
-                        if (temp[4] == "T")
+                        if (line.Contains("|"))
                         {
-                            wrapper = true;
+                            string[] temp = line.Split("|");
+                            Candy candy = new Candy("",temp[0], temp[1], decimal.Parse(temp[3].Substring(1))/ int.Parse(temp[2]), false);
+                            candy.Qty = int.Parse(temp[2]);                
+                            candies.Add(candy);
                         }
-                        Candy candy = new Candy(temp[0], temp[1], temp[2], decimal.Parse(temp[3]), wrapper);
-                        candies.Add(candy);
                     }
                 }
             }
@@ -84,11 +83,13 @@ namespace Capstone.Classes
             // Writing report
             try
             {
-                using (StreamWriter sw = new StreamWriter(totalSalesReportPath))
+                using (StreamWriter sw = new StreamWriter(totalSalesReportPath, false))
                 {
+                   
                     foreach (Candy purchasedCandy in purchasedCandies)
                     {
-                        if (candies != null)
+                        bool isNotThere = false;
+                        if (candies.Count != 0)
                         {
                             foreach (Candy reportedCandy in candies)
                             {
@@ -98,10 +99,14 @@ namespace Capstone.Classes
                                 }
                                 else
                                 {
-                                    candies.Add(purchasedCandy);
+                                    isNotThere = true;
                                 }
+                               
                             }
-
+                            if (isNotThere)
+                            {
+                                candies.Add(purchasedCandy);
+                            }
                         }
                         else
                         {
@@ -110,10 +115,14 @@ namespace Capstone.Classes
 
                     }
 
+                    decimal total = 0;
                     foreach (Candy candy in candies)
                     {
-                        sw.WriteLine($"{candy.Id}|{candy.Name}|{candy.Qty}|{candy.Qty * candy.Price:C2}");
+                        total += (candy.Price * candy.Qty);
+                        sw.WriteLine($"{candy.Id}|{candy.Name}|{candy.Qty}|{candy.Price * candy.Qty:C2}");
                     }
+                    sw.WriteLine();
+                    sw.WriteLine($"**TOTAL SALES**  {total:C2}");
                 }
             }
             catch (IOException)
