@@ -39,7 +39,7 @@ namespace Capstone.Classes
                         MakeSale();
                         break;
                     case "3":
-                        
+                        EndOfProgram();
                         done = true;
                         break;
                     default:
@@ -49,6 +49,10 @@ namespace Capstone.Classes
             }
         }
 
+        private void EndOfProgram()
+        {
+            store.GetTotalSales();
+        }
 
         private void MakeSale()
         {

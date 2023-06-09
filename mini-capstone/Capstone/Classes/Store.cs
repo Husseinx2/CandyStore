@@ -14,6 +14,7 @@ namespace Capstone.Classes
         private FileHandler filehandler = new FileHandler();
         List<Candy> candies = new List<Candy>();
         List<Candy> shoppingCart = new List<Candy>();
+        List<Candy> purchasedCandies = new List<Candy>();
         private decimal Money { get; set; } = 0.0M;
         public decimal SubTotal { get; private set; } = 0.0m;
 
@@ -157,6 +158,7 @@ namespace Capstone.Classes
                 }
             }
             //emptying shopping cart and reseting subtotal for next customer
+            AddPurchasedCandies();
             shoppingCart = new List<Candy>();
             SubTotal = 0;
             return result;
@@ -165,6 +167,19 @@ namespace Capstone.Classes
         public List<Candy> GetShoppingCart()
         {
             return shoppingCart;
+        }
+
+        public void AddPurchasedCandies()
+        {
+            foreach (Candy candy in shoppingCart)
+            {
+                purchasedCandies.Add(candy);
+            }
+        }
+
+        public void GetTotalSales()
+        {
+            filehandler.TotalSalesReport(purchasedCandies);
         }
     }
 }
