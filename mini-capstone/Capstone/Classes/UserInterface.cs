@@ -39,6 +39,7 @@ namespace Capstone.Classes
                         MakeSale();
                         break;
                     case "3":
+                        
                         done = true;
                         break;
                     default:
@@ -47,6 +48,7 @@ namespace Capstone.Classes
                 }
             }
         }
+
 
         private void MakeSale()
         {
@@ -66,7 +68,7 @@ namespace Capstone.Classes
                         SelectProducts();
                         break;
                     case "3":
-
+                        CompleteSale();
                         done = true;
                         break;
                     default:
@@ -75,6 +77,39 @@ namespace Capstone.Classes
                 }
             }
         }
+        private void CompleteSale()
+        {
+
+            decimal change = store.GetMoney();
+            string denominationsToGive = store.CompleteSale();
+            List<Candy> candiesPurchased = store.GetShoppingCart();
+
+            foreach (Candy candy in candiesPurchased)
+            {
+                string type = "";
+                switch (candy.Id.Substring(0, 1))
+                {
+                    case "C":
+                        type = "Chocolate Confectionery";
+                        break;
+                    case "L":
+                        type = "Licorice";
+                        break;
+                    case "S":
+                        type = "Sour Flavored Candies";
+                        break;
+                    case "H":
+                        type = "Hard Tact Confectionery";
+                        break;
+                }
+                Console.WriteLine($"{candy.Qty} {candy.Name} {type} {candy.Price:C2} {candy.Price * candy.Qty:C2}");
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Total: {store.SubTotal:C2}");
+            Console.WriteLine();
+            Console.WriteLine($"Change: {change:C2}");
+            Console.WriteLine(denominationsToGive);
+        }
 
         private void SelectProducts()
         {
@@ -82,7 +117,7 @@ namespace Capstone.Classes
             Console.Write("Enter Product Id: ");
             string productId = Console.ReadLine();
             Console.Write("Enter Quantity: ");
-            int quantity = int.Parse(Console.ReadLine());
+            int quantity = int.Parse(Console.ReadLine()); // Can't parse empty string
             bool isValid = store.SelectProducts(productId, quantity);
             if (!isValid)
             {
@@ -97,7 +132,7 @@ namespace Capstone.Classes
             bool result = store.AddMoney(money);
             if (!result)
             {
-                Console.WriteLine("Enter Amount between 1 and 100");
+                Console.WriteLine("Invalid entry, enter an Amount between 1 and 100");
             }
 
         }

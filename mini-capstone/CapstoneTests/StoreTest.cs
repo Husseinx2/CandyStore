@@ -1,4 +1,5 @@
 using Capstone.Classes;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -26,12 +27,11 @@ namespace CapstoneTests
             Store test = new Store();
 
             // Act
-            List<Candy> result = test.ShowInventory();
             List<Candy> candies = new List<Candy>();
 
             // Assert
             //CollectionAssert.AllItemsAreInstancesOfType(result, new List<Candy>());
-            CollectionAssert.AreEqual(candies, result);
+            CollectionAssert.AreEqual(candies, test.ShowInventory());
         }
 
         [TestMethod]
@@ -91,6 +91,42 @@ namespace CapstoneTests
 
             // Assert
             Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [DataTestMethod]
+        [DataRow(40.00, "(2)Twenties ")]
+        [DataRow(20.00, "(1)Twenty ")]
+        [DataRow(10.00, "(1)Ten ")]
+        [DataRow(5.00, "(1)Five ")]
+        [DataRow(1.00, "(1)One ")]
+        [DataRow(3.00, "(3)Ones ")]
+        
+        public void CalculateChangeTest(double amount, string expectedResult)
+        {
+            // Arrange
+            
+            Store test = new Store();
+            test.AddMoney((int)amount);
+
+            // Act
+            string actualResult = test.CompleteSale();
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void GetShoppingCart()
+        {
+            // Arrange
+            Store test = new Store();
+
+            // Act
+            List<Candy> candies = new List<Candy>();
+
+            // Assert
+            //CollectionAssert.AllItemsAreInstancesOfType(result, new List<Candy>());
+            CollectionAssert.AreEqual(candies, test.GetShoppingCart());
         }
     }
 }

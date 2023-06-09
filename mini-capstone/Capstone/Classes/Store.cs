@@ -14,8 +14,10 @@ namespace Capstone.Classes
         List<Candy> candies = new List<Candy>();
         List<Candy> shoppingCart = new List<Candy>();
         private decimal Money { get; set; } = 0.0M;
-        private decimal SubTotal { get; set; } = 0.0m;
+        public decimal SubTotal { get; private set; } = 0.0m;
 
+
+        // Money handling
         public bool AddMoney(int money)
         {
             bool result = false;
@@ -34,6 +36,8 @@ namespace Capstone.Classes
         {
             return Money;
         }
+
+        // Inventory
         public List<Candy> ShowInventory()
         {
             return candies;
@@ -43,6 +47,7 @@ namespace Capstone.Classes
             candies = filehandler.ReadInventory();
         }
 
+        // Product selection and management
         public bool SelectProducts(string selection, int quantity)
         {
             bool result = false;
@@ -90,6 +95,72 @@ namespace Capstone.Classes
                 }
             }
             return "ID not Found";
+        }
+
+        // Sale completion
+        public string CompleteSale()
+        {
+            const decimal Twenty = 20.00M;
+            const decimal Ten = 10.00M;
+            const decimal Five = 5.00M;
+            const decimal One = 1.00M;
+            const decimal Quarter = 0.25M;
+            const decimal Dime = 0.10M;
+            const decimal Nickel = 0.05M;
+
+            string result = "";
+
+            while (Money > 0.00M)
+            {
+                if (Money >= Twenty)
+                {
+                    int numberOf = (int)(Money / Twenty);
+                    Money -= numberOf * Twenty;
+                    result += "(" + numberOf + ")" + "Twent" + (numberOf == 1 ? "y" : "ies") + " ";
+                }
+                else if (Money >= Ten)
+                {
+                    int numberOf = (int)(Money / Ten);
+                    Money -= numberOf * Ten;
+                    result += "(" + numberOf + ")" + "Ten" + (numberOf == 1 ? "" : "s") + " ";
+                }
+                else if (Money >= Five)
+                {
+                    int numberOf = (int)(Money / Five);
+                    Money -= numberOf * Five;
+                    result += "(" + numberOf + ")" + "Five" + (numberOf == 1 ? "" : "s") + " ";
+                }
+                else if (Money >= One)
+                {
+                    int numberOf = (int)(Money / One);
+                    Money -= numberOf * One;
+                    result += "(" + numberOf + ")" + "One" + (numberOf == 1 ? "" : "s") + " ";
+                }
+                else if (Money >= Quarter)
+                {
+                    int numberOf = (int)(Money / Quarter);
+                    Money -= numberOf * Quarter;
+                    result += "(" + numberOf + ")" + "Quarter" + (numberOf == 1 ? "" : "s") + " ";
+                }
+                else if (Money >= Dime)
+                {
+                    int numberOf = (int)(Money / Dime);
+                    Money -= numberOf * Dime;
+                    result += "(" + numberOf + ")" + "Dime" + (numberOf == 1 ? "" : "s") + " ";
+                }
+                else if (Money >= Nickel)
+                {
+                    int numberOf = (int)(Money / Nickel);
+                    Money -= numberOf * Nickel;
+                    result += "(" + numberOf + ")" + "Nickel" + (numberOf == 1 ? "" : "s") + " ";
+                }
+            }
+            return result;
+        }
+
+        public List<Candy> GetShoppingCart()
+        {
+            return shoppingCart;
         }
     }
 }
